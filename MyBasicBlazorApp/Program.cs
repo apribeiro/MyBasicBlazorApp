@@ -1,10 +1,23 @@
+using Microsoft.EntityFrameworkCore;
 using MyBasicBlazorApp.Components;
+using MyBasicBlazorApp.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+builder
+    .Services
+    .AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder
+    .Services
+    .AddDbContext<AppDbContext>(x => x.UseInMemoryDatabase("app"));
+
+builder
+    .Services
+    .AddQuickGridEntityFrameworkAdapter();
 
 var app = builder.Build();
 
@@ -22,6 +35,6 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+   .AddInteractiveServerRenderMode();
 
 app.Run();
